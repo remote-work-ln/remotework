@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS/Debian/Ubuntu
 #	Description: proxy
-#	Version: 1.0
+#	Version: 1.1
 #	Author: remote-work-ln
 #	Blog: https://
 #=================================================
 
-sh_ver="1.0"
+sh_ver="1.1"
 filepath=$(cd "$(dirname "$0")"; pwd)
 file_1=$(echo -e "${filepath}"|awk -F "$0" '{print $1}')
 file="/usr/local/proxy"
@@ -68,7 +68,7 @@ check_pid(){
 	PID=$(ps -ef| grep "./proxy "| grep -v "grep" | grep -v "proxy.sh" | grep -v "init.d" |grep -v "service" |awk '{print $2}')
 }
 check_new_ver(){
-	echo -e "请输入要下载安装的 proxy 版本号 ${Green_font_prefix}[ 格式是日期，例如: v20190827 ]${Font_color_suffix}
+	echo -e "请输入要下载安装的 proxy 版本号 ${Green_font_prefix}[ 格式是日期，例如: v20211111 ]${Font_color_suffix}
 版本列表请去这里获取：${Green_font_prefix}[ https://github.com/remote-work-ln/proxy/releases ]${Font_color_suffix}"
 	read -e -p "直接回车即自动获取:" proxy_new_ver
 	if [[ -z ${proxy_new_ver} ]]; then
@@ -102,7 +102,8 @@ Download_proxy(){
 	[[ ! -e ${file} ]] && mkdir ${file}
 	cd ${file}
 	if [[ ${bit} == "x86_64" ]]; then
-		wget --no-check-certificate -N "https://github.com/remote-work-ln/proxy/releases/download/${proxy_new_ver}/proxy"
+		wget --no-check-certificate -N "https://github.com/remote-work-ln/proxy/releases/download/${proxy_new_ver}/proxy_linux_amd64"
+		mv brook_linux_amd64 brook
 	else
 		wget --no-check-certificate -N "https://github.com/remote-work-ln/proxy/releases/download/${proxy_new_ver}/proxy_linux_386"
 		mv proxy_linux_386 proxy
@@ -216,16 +217,19 @@ Set_passwd(){
 }
 Set_protocol(){
 	echo -e "请选择 proxy 协议
- ${Green_font_prefix}1.${Font_color_suffix} proxy（新版协议，即 [servers]）
- ${Green_font_prefix}2.${Font_color_suffix} proxy Stream（旧版协议，即 [streamservers]，不推荐，除非使用新版协议速度慢）" && echo
+ ${Green_font_prefix}1.${Font_color_suffix} proxy（新版协议，即 [server]）
+ ${Green_font_prefix}2.${Font_color_suffix} wsserver
+ ${Green_font_prefix}3.${Font_color_suffix} wssserver" && echo
 	read -e -p "(默认: 1. proxy（新版协议）):" bk_protocol
 	[[ -z "${bk_protocol}" ]] && bk_protocol="1"
 	if [[ ${bk_protocol} == "1" ]]; then
-		bk_protocol="servers"
+		bk_protocol="server"
 	elif [[ ${bk_protocol} == "2" ]]; then
-		bk_protocol="streamservers"
+		bk_protocol="wsserver"
+	elif [[ ${bk_protocol} == "3" ]]; then
+		bk_protocol="wssserver"
 	else
-		bk_protocol="servers"
+		bk_protocol="server"
 	fi
 	echo && echo "========================"
 	echo -e "	协议 : ${Green_font_prefix}${bk_protocol}${Font_color_suffix}"

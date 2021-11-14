@@ -157,24 +157,24 @@ exit
 
 配置`forwardc.ini`：
 
-    ```ini
-    [common]
-    server_addr = x.x.x.x
-    server_port = 7000
-    token = remotework
-    [secret_rdp]
-    type = stcp
-    # 只有 sk 一致的用户才能访问到此服务
-    sk = abcdefg
-    local_ip = 127.0.0.1
-    local_port = 3389
-    ```
-    
-    > 变化：
-    >
-    > - type 变为 stcp
-    > - 新增 sk，secure key
-    > - 不再需要 remote_port
+```ini
+[common]
+server_addr = x.x.x.x
+server_port = 7000
+token = remotework
+[secret_rdp]
+type = stcp
+# 只有 sk 一致的用户才能访问到此服务
+sk = abcdefg
+local_ip = 127.0.0.1
+local_port = 3389
+
+> 变化：
+>
+> - type 变为 stcp
+> - 新增 sk，secure key
+> - 不再需要 remote_port
+```
 
 **外网访问者**
 
